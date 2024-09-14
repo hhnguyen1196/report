@@ -1,0 +1,88 @@
+.serialNumber {
+    width: 3%;
+}
+
+.deliveryPartner {
+    width: 16%;
+}
+
+.recipient {
+    width: 16%;
+}
+
+.equipment {
+    width: 20%;
+}
+
+.quantity {
+    width: 7%;
+}
+
+.deviceCode {
+    width: 12%;
+}
+
+.condition {
+    width: 8%;
+}
+
+.deliveryDate {
+    width: 12%;
+}
+
+.updateOrDelete {
+    width: 6%;
+}
+
+@media (max-width: 1024px) {
+    .serialNumber,
+    .deliveryPartner,
+    .recipient,
+    .equipment,
+    .quantity,
+    .deviceCode,
+    .condition,
+    .deliveryDate {
+        width: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    thead {
+        display: block;
+        width: 100%;
+    }
+
+    tr {
+        display: block;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    th,
+    td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+    }
+
+    .serialNumber,
+    .deliveryPartner,
+    .recipient,
+    .equipment,
+    .quantity,
+    .deviceCode,
+    .condition,
+    .deliveryDate {
+        width: auto;
+    }
+
+    td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+}
