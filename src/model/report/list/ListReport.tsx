@@ -8,6 +8,7 @@ import FormReport from "../form/FormReport";
 import ConfirmModal from "./table/ConfirmModal";
 import useReport from "../../../context/report/useReport";
 import {Report} from "../../../context/report/ReportProvider";
+import {exportTableToExcel} from "../../../utils/exportTableToExcel";
 
 const ListReport = () => {
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
@@ -60,12 +61,15 @@ const ListReport = () => {
             <Button onClick={openModal} type="insertReport">Tạo mới</Button>
             <div className="mt-2">
                 <div className="shadow overflow-hidden rounded border-gray-200">
-                    <table className="table table-fixed min-w-full bg-white">
+                    <table className="table table-fixed min-w-full bg-white" id="table">
                         <Header/>
                         <Body handleUpdate={handleUpdate} handleDelete={handleDelete}/>
                     </table>
+                    <button onClick={() => exportTableToExcel('table')}>
+                        Export to Excel
+                    </button>
                     {isModalTableOpen && (<ConfirmModal isOpen={isModalTableOpen} onConfirm={confirmDelete}
-                                                        onClose={cancelDelete} />)}
+                                                        onClose={cancelDelete}/>)}
                 </div>
             </div>
             <FormModal isOpen={isModalFormOpen} onClose={closeModal}>
