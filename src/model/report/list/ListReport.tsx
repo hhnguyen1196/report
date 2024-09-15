@@ -14,17 +14,19 @@ const ListReport = () => {
     const [isModalTableOpen, setIsModalTableOpen] = useState(false);
     const {deleteReport} = useReport();
     const [selectedReport, setSelectedReport] = useState<number | null>();
-    const [selectedReportUpdate, setSelectedReportUpdate] = useState<Report>();
+    const [selectedReportUpdate, setSelectedReportUpdate] = useState<Report | null>();
     const navigate = useNavigate();
     const openModal = () => {
         setIsModalFormOpen(true)
     }
     const closeModal = () => {
         setIsModalFormOpen(false)
+        setSelectedReportUpdate(null);
     }
 
     const onSuccess = () => {
         setIsModalFormOpen(false);
+        setSelectedReportUpdate(null);
         navigate("/");
     }
 
