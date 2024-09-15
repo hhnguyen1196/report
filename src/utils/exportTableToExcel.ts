@@ -11,7 +11,7 @@ const getCurrentDateTimeString = () => {
     return `${month} ${hours}h${minutes}`;
 };
 
-const fileName = `Dữ liệu tháng${getCurrentDateTimeString()}.xlsx`;
+const fileName = `Dữ liệu tháng ${getCurrentDateTimeString()}.xlsx`;
 
 const filterTableData = (tableId: string) => {
     const table = document.getElementById(tableId) as HTMLTableElement;

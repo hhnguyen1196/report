@@ -65,13 +65,14 @@ const ListReport = () => {
                         <Header/>
                         <Body handleUpdate={handleUpdate} handleDelete={handleDelete}/>
                     </table>
-                    <button onClick={() => exportTableToExcel('table')}>
-                        Export to Excel
-                    </button>
+
                     {isModalTableOpen && (<ConfirmModal isOpen={isModalTableOpen} onConfirm={confirmDelete}
                                                         onClose={cancelDelete}/>)}
                 </div>
             </div>
+            <Button onClick={() => exportTableToExcel('table')} type={"exportExcel"}>
+                Xuất file excel
+            </Button>
             <FormModal isOpen={isModalFormOpen} onClose={closeModal}>
                 <FormReport onSuccess={onSuccess} onClose={closeModal} data={selectedReportUpdate} />
             </FormModal>
