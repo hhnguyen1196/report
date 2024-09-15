@@ -3,42 +3,9 @@
 @tailwind utilities;
 
 @layer base {
-    .container {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
+
+    .datePicker {
+        width: 100%;
     }
 
-    .rotating-button {
-        position: relative;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        color: black;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        overflow: hidden;
-        transition: background-color 0.3s ease;
-    }
-
-    .rotating-button .loading {
-        position: absolute;
-        width: 60px;
-        height: 60px;
-        border: 8px solid transparent;
-        border-top: 8px solid black;
-        border-radius: 50%;
-        animation: spin 2s linear infinite;
-        box-sizing: border-box;
-    }
-
-    @keyframes spin {
-        to {
-            transform: rotate(360deg);
-        }
-    }
 }

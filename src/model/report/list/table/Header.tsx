@@ -14,7 +14,7 @@ const Header = () => {
       <th className={`${styles} deviceCode`}>Mã thiết bị</th>
       <th className={`${styles} condition`}>Hiện trạng</th>
       <th className={`${styles} deliveryDate`}>Ngày bàn giao</th>
-      <th className={`${styles} deliveryDate`}>Tùy chọn</th>
+      <th className={`${styles} updateOrDelete`}></th>
     </tr>
     </thead>
   );

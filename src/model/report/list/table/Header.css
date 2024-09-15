@@ -42,7 +42,8 @@
     .quantity,
     .deviceCode,
     .condition,
-    .deliveryDate {
+    .deliveryDate,
+    .updateOrDelete{
         width: auto;
     }
 }
