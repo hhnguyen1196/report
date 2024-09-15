@@ -1,20 +1,28 @@
-import React, {FormEvent, useState} from "react";
+import React, {FormEvent, useEffect, useState} from "react";
 import Button from "../../../layout/Button";
 import useReport from "../../../context/report/useReport";
 import {useNavigate} from "react-router-dom";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import {vi} from 'date-fns/locale';
+import {Report} from "../../../context/report/ReportProvider";
 
 type Props = {
     onSuccess: () => void;
     onClose: () => void;
+    data: Report | null | undefined;
 }
 
-const FormReport = ({onSuccess, onClose}: Props) => {
+const FormReport = ({onSuccess, onClose, data}: Props) => {
     const navigate = useNavigate();
-    const {report, insertReport} = useReport();
+    const {report, insertReport, updateReport} = useReport();
     const [formData, setFormData] = useState(report);
+
+    useEffect(() => {
+        if (data) {
+            setFormData(data)
+        }
+    }, [data]);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const {name, value} = event.target;
@@ -36,6 +44,8 @@ const FormReport = ({onSuccess, onClose}: Props) => {
         event.preventDefault();
         if (formData.id === null) {
             insertReport(formData);
+        } else {
+            updateReport(formData);
         }
         onSuccess();
         navigate("/");

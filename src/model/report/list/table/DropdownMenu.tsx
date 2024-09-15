@@ -1,16 +1,20 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Button from "../../../../layout/Button";
 
 type Props = {
     onUpdate: () => void;
     onDelete: () => void;
+    length: number;
+    index: number
 };
 
-const DropdownMenu = ({onUpdate, onDelete}: Props) => {
+const DropdownMenu = ({onUpdate, onDelete, length, index}: Props) => {
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
-
     const toggleMenu = () => setIsOpen(!isOpen);
+    const style = length - index > 2 ?
+        "absolute right-0 mt-2.5 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50" :
+        "absolute right-0 bottom-0 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50"
 
     const handleUpdate = () => {
         onUpdate();
@@ -45,12 +49,12 @@ const DropdownMenu = ({onUpdate, onDelete}: Props) => {
     }, []);
 
     return (
-        <div className="relative inline-block text-left" ref={menuRef}>
+        <div className="inline-block text-left" ref={menuRef}>
             <Button onClick={toggleMenu} type="updateOrDateTable">
                 ...
             </Button>
             {isOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+                <div className={style}>
                     <Button onClick={handleUpdate} type="selectUpdateOrDeleteReport">
                         Cập nhật
                     </Button>

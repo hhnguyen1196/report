@@ -19,6 +19,8 @@ const Button = ({children, onClick, type, buttonType = "button"}: Props) => {
   const cancel = "rounded-md px-4 py-2 text-white bg-red-600 hover:bg-red-500 my-3";
   const updateOrDateTable = "px-2 py-1 font-bold rounded hover:bg-gray-200";
   const selectUpdateOrDeleteReport = "block w-full px-4 py-2.5 text-left hover:bg-gray-200";
+  const confirmDelete = "px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600";
+  const cancelDelete = "px-4 py-2 bg-gray-300 rounded hover:bg-gray-400";
   const styles: Styles = {
     insertReport: insertReport,
     updateReport: updateReport,
@@ -26,7 +28,9 @@ const Button = ({children, onClick, type, buttonType = "button"}: Props) => {
     confirm: confirm,
     cancel: cancel,
     updateOrDateTable: updateOrDateTable,
-    selectUpdateOrDeleteReport: selectUpdateOrDeleteReport
+    selectUpdateOrDeleteReport: selectUpdateOrDeleteReport,
+    confirmDelete: confirmDelete,
+    cancelDelete: cancelDelete
   };
   return (
     <button type={buttonType} onClick={onClick} className={styles[type]}>{children}</button>

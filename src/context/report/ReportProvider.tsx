@@ -32,6 +32,8 @@ type State = {
 type ContextValue = State & {
     getAllReport: () => void;
     insertReport: (report: Report) => void;
+    updateReport: (report: Report) => void;
+    deleteReport: (id: number) => void;
 }
 
 type Action = {
@@ -109,7 +111,35 @@ const ReportProvider = ({children}: Props) => {
         } catch (error) {
             throw new Error("Network error");
         }
-    }, [getAllReport])
+    }, [getAllReport, dispatch])
+
+    const updateReport = useCallback(async (report: Report) => {
+        try {
+            const data = {...report, condition: report.condition === "Mới" ?  "NEW" : "OLD"};
+            await fetch(url(`${API.REPORT}`), {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            await getAllReport();
+            dispatch({type: ReportAction.INSERT_REPORT});
+        } catch (error) {
+            throw new Error("Network error");
+        }
+    }, [getAllReport, dispatch])
+
+    const deleteReport = useCallback(async (id: number) => {
+        try {
+            await fetch(url(`${API.REPORT}/${id}`), {
+                method: 'DELETE',
+                headers: {'Content-Type': 'application/json'},
+            });
+            await getAllReport();
+            dispatch({type: ReportAction.DELETE_REPORT});
+        } catch (error) {
+            throw new Error("Network error");
+        }
+    }, [getAllReport, dispatch])
     return (
         <ReportContext.Provider
             value={{
@@ -118,7 +148,9 @@ const ReportProvider = ({children}: Props) => {
                 isLoading,
                 error,
                 getAllReport,
-                insertReport
+                insertReport,
+                updateReport,
+                deleteReport
             }}>
             {children}
         </ReportContext.Provider>

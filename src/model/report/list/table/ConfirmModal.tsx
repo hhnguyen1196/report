@@ -1,3 +1,6 @@
+import Button from "../../../../layout/Button";
+import {useEffect} from "react";
+
 type Props = {
     isOpen: boolean;
     onClose: () => void;
@@ -5,6 +8,22 @@ type Props = {
 };
 
 const ConfirmModal = ({isOpen, onClose, onConfirm}: Props) => {
+    useEffect(() => {
+        const handleEsc = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                onClose();
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener('keydown', handleEsc);
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleEsc);
+        };
+    }, [isOpen, onClose]);
+
     if (!isOpen) return null;
 
     return (
@@ -14,18 +33,12 @@ const ConfirmModal = ({isOpen, onClose, onConfirm}: Props) => {
                 <h2 className="text-lg font-semibold mb-4">Xác nhận xóa</h2>
                 <p>Bạn có chắc chắn muốn xóa mục này không?</p>
                 <div className="mt-4 flex justify-end space-x-4">
-                    <button
-                        onClick={onConfirm}
-                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                    >
+                    <Button onClick={onConfirm} type="confirmDelete">
                         Đồng ý
-                    </button>
-                    <button
-                        onClick={onClose}
-                        className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
-                    >
+                    </Button>
+                    <Button onClick={onClose} type="cancelDelete">
                         Hủy bỏ
-                    </button>
+                    </Button>
                 </div>
             </div>
         </div>
