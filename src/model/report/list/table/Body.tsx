@@ -20,11 +20,11 @@ const Body = ({handleUpdate, handleDelete}: Props) => {
     return (
         <>
             <tbody className="text-stone-900 text-[15px]">
-            {reportList.map((report: Report, index: number) => (
+            {reportList.length > 0 && (reportList.map((report: Report, index: number) => (
                 <Table key={report.id} report={report} index={index} length={length}
                        onUpdate={() => handleUpdate(report)}
                        onDelete={() => handleDelete(report.id as number)}/>
-            ))}
+            )))}
             </tbody>
         </>
     );
