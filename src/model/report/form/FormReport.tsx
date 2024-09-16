@@ -104,7 +104,7 @@ const FormReport = ({onSuccess, onClose, data}: Props) => {
                         <div>
                             <input
                                 className="w-full border border-gray-300 rounded py-2 px-2 focus:outline-none focus:border-gray-600"
-                                id="quantity" type="text" name="quantity" value={formData.quantity}
+                                id="quantity" type="number" name="quantity" value={formData.quantity}
                                 onChange={handleChange}/>
                         </div>
                     </div>

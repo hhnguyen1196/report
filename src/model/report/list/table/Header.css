@@ -15,7 +15,7 @@
 }
 
 .quantity {
-    width: 7%;
+    width: 8%;
 }
 
 .deviceCode {
@@ -23,7 +23,7 @@
 }
 
 .condition {
-    width: 8%;
+    width: 9%;
 }
 
 .deliveryDate {
@@ -31,7 +31,7 @@
 }
 
 .updateOrDelete {
-    width: 6%;
+    width: 4%;
 }
 
 @media (max-width: 1024px) {
