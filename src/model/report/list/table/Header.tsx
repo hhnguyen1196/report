@@ -1,10 +1,10 @@
 import './Header.css';
 
 const Header = () => {
-  const styles = "px-3 py-3 text-center border border-slate-300";
+  const styles = "px-3 py-2 text-center border border-slate-300";
 
   return (
-    <thead className="bg-gray-800 text-white text-[15px]">
+    <thead className="bg-gray-700 text-white text-[15px]">
     <tr className="text-left font-bold">
       <th className={`${styles} serialNumber`}>STT</th>
       <th className={`${styles} deliveryPartner`}>Bên giao</th>

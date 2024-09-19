@@ -14,7 +14,6 @@ type Props = {
 }
 
 const FormReport = ({onSuccess, onClose, data}: Props) => {
-    const navigate = useNavigate();
     const {report, insertReport, updateReport} = useReport();
     const [formData, setFormData] = useState(report);
 
@@ -48,7 +47,6 @@ const FormReport = ({onSuccess, onClose, data}: Props) => {
             updateReport(formData);
         }
         onSuccess();
-        navigate("/");
     };
 
     return <div>

@@ -95,7 +95,7 @@ const ReportProvider = ({children}: Props) => {
             const data = await response.json();
             dispatch({type: ReportAction.GET_ALL_REPORT, payload: data})
         } catch (error) {
-            // throw new Error("Network error");
+            console.log("Network error");
         }
     }, [])
 

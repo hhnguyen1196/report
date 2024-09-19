@@ -9,6 +9,7 @@ import ConfirmModal from "./table/ConfirmModal";
 import useReport from "../../../context/report/useReport";
 import {Report} from "../../../context/report/ReportProvider";
 import {exportTableToExcel} from "../../../utils/exportTableToExcel";
+import ImportExcelListReport from "./table/ImportExcelListReport";
 
 const ListReport = () => {
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
@@ -59,9 +60,9 @@ const ListReport = () => {
             <h1 className="uppercase font-bold text-3xl text-stone-600 m-2 justify-center text-center">Danh sách tổng
                 hợp bàn giao thiết bị</h1>
             <Button onClick={openModal} type="insertReport">Tạo mới</Button>
-            <div className="mt-2">
-                <div className="shadow overflow-hidden rounded border-gray-200">
-                    <table className="table table-fixed min-w-full bg-white" id="table">
+            <div className="mt-3">
+                <div className="shadow overflow-hidden">
+                    <table className="table table-fixed min-w-full border-collapse" id="table">
                         <Header/>
                         <Body handleUpdate={handleUpdate} handleDelete={handleDelete}/>
                     </table>
@@ -71,8 +72,10 @@ const ListReport = () => {
                 </div>
             </div>
             <Button onClick={() => exportTableToExcel('table')} type={"exportExcel"}>
-                Xuất file excel
+                Xuất file
             </Button>
+            <ImportExcelListReport></ImportExcelListReport>
+
             <FormModal isOpen={isModalFormOpen} onClose={closeModal}>
                 <FormReport onSuccess={onSuccess} onClose={closeModal} data={selectedReportUpdate} />
             </FormModal>

@@ -3,12 +3,8 @@ import {saveAs} from 'file-saver';
 
 const getCurrentDateTimeString = () => {
     const now = new Date();
-
-    const month = String(now.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-
-    return `${month} ${hours}h${minutes}`;
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    return `${month}`;
 };
 
 const fileName = `Dữ liệu tháng ${getCurrentDateTimeString()}.xlsx`;

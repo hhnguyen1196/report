@@ -13,8 +13,8 @@ const DropdownMenu = ({onUpdate, onDelete, length, index}: Props) => {
     const menuRef = useRef<HTMLDivElement>(null);
     const toggleMenu = () => setIsOpen(!isOpen);
     const style = length - index > 2 ?
-        "absolute right-0 mt-2.5 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50" :
-        "absolute right-0 bottom-0 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50"
+        "absolute right-0 mt-2 w-36 bg-white border border-gray-300 rounded-lg shadow-lg z-50" :
+        "absolute right-0 bottom-0 w-36 bg-white border border-gray-300 rounded-lg shadow-lg z-50"
 
     const handleUpdate = () => {
         onUpdate();
