@@ -5,10 +5,10 @@ type Props = {
     deliveryPartner: string;
     recipient: string;
     equipment: string;
-    quantity: string;
+    quantity: number;
     deviceCode: string;
     condition: string;
-    deliveryDate: Date | null;
+    deliveryDate: Date;
 }
 
 export const importExcelData = (file: File): Promise<Props[] | null> => {
@@ -16,10 +16,10 @@ export const importExcelData = (file: File): Promise<Props[] | null> => {
         const reader = new FileReader();
         reader.onload = (event) => {
             const bstr = event.target?.result;
-            const workbook = XLSX.read(bstr, {type: 'binary'});
+            const workbook = XLSX.read(bstr, { type: 'binary' });
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
             const formattedData = formatData(jsonData);
             resolve(formattedData);
         };
@@ -40,17 +40,27 @@ const formatData = (rawData: any[]): Props[] | null => {
     ];
 
     if (!requiredHeaders.every(header => headers.includes(header))) {
-        return null
+        return null;
     }
 
-    return rawData.slice(1).map((row: any) => ({
-        id: row[headers.indexOf('id') || ''],
-        deliveryPartner: row[headers.indexOf('Bên giao')] || '',
-        recipient: row[headers.indexOf('Bên nhận')] || '',
-        equipment: row[headers.indexOf('Thiết bị')] || '',
-        quantity: row[headers.indexOf('Số lượng')] || '',
-        deviceCode: row[headers.indexOf('Mã thiết bị')] || '',
-        condition: row[headers.indexOf('Hiện trạng')] || '',
-        deliveryDate: row[headers.indexOf('Ngày bàn giao')] ? new Date(row[headers.indexOf('Ngày bàn giao')]) : null,
-    }));
+    return rawData.slice(1).map((row: any) => {
+        const dateString: string = row[headers.indexOf('Ngày bàn giao')] || '';
+        const parts: string[] = dateString.split("/");
+
+        const day: number = parseInt(parts[0]);
+        const month: number = parseInt(parts[1]) - 1;
+        const year: number = parseInt(parts[2]);
+        const deliveryDate: Date = new Date(Date.UTC(year, month, day));
+
+        return {
+            id: row[headers.indexOf('STT')] || null, // Cần thay đổi 'id' thành 'STT'
+            deliveryPartner: row[headers.indexOf('Bên giao')],
+            recipient: row[headers.indexOf('Bên nhận')],
+            equipment: row[headers.indexOf('Thiết bị')],
+            quantity: row[headers.indexOf('Số lượng')],
+            deviceCode: row[headers.indexOf('Mã thiết bị')],
+            condition: row[headers.indexOf('Hiện trạng')],
+            deliveryDate: deliveryDate,
+        };
+    });
 };

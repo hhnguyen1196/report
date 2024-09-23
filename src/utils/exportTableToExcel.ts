@@ -4,10 +4,10 @@ import {saveAs} from 'file-saver';
 const getCurrentDateTimeString = () => {
     const now = new Date();
     const month = String(now.getMonth() + 1).padStart(2, '0');
-    return `${month}`;
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${month}-${hours}h${minutes}`;
 };
-
-const fileName = `Dữ liệu tháng ${getCurrentDateTimeString()}.xlsx`;
 
 const filterTableData = (tableId: string) => {
     const table = document.getElementById(tableId) as HTMLTableElement;
@@ -41,6 +41,6 @@ export const exportTableToExcel = (tableId: string) => {
 
     const wBout = XLSX.write(wb, {bookType: 'xlsx', type: 'array'});
     const blob = new Blob([wBout], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-
+    const fileName = `Dữ-liệu-tháng-${getCurrentDateTimeString()}.xlsx`;
     saveAs(blob, fileName);
 };

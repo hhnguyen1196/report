@@ -16,19 +16,17 @@ const ListReport = () => {
     const [isModalTableOpen, setIsModalTableOpen] = useState(false);
     const {deleteReport} = useReport();
     const [selectedReport, setSelectedReport] = useState<number | null>();
-    const [selectedReportUpdate, setSelectedReportUpdate] = useState<Report | null>();
+    const [selectedReportUpdate, setSelectedReportUpdate] = useState<Report>();
     const navigate = useNavigate();
     const openModal = () => {
         setIsModalFormOpen(true)
     }
     const closeModal = () => {
         setIsModalFormOpen(false)
-        setSelectedReportUpdate(null);
     }
 
     const onSuccess = () => {
         setIsModalFormOpen(false);
-        setSelectedReportUpdate(null);
         navigate("/");
     }
 
@@ -50,8 +48,9 @@ const ListReport = () => {
         setIsModalTableOpen(true);
     };
 
-    const handleUpdate = (record: Report) => {
-        setSelectedReportUpdate(record);
+    const handleUpdate = (report: Report) => {
+        const data = {...report, condition: report.condition === 'Mới' ? 'NEW' : 'OLD'}
+        setSelectedReportUpdate(data);
         setIsModalFormOpen(true);
     };
 

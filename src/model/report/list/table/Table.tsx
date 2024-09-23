@@ -33,7 +33,8 @@ const Table = ({report, index, onUpdate, onDelete, length}: Props) => {
                 <td className={`${styles}${center}`}>{report.quantity}</td>
                 <td className={`${styles}`}>{report.deviceCode}</td>
                 <td className={`${styles}${center}`}>{report.condition}</td>
-                <td className={`${styles}${center}`}>{format(report.deliveryDate, 'dd/MM/yyyy').toString()}</td>
+                <td className={`${styles}${center}`}>{report.deliveryDate !== null
+                    ? format(report.deliveryDate, 'dd/MM/yyyy').toString() : ''}</td>
                 <td className={`${styles} updateOrDelete text-center`}>
                     <DropdownMenu onUpdate={handleUpdate} onDelete={handleDelete} index={index} length={length}/>
                 </td>

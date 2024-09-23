@@ -9,6 +9,7 @@ enum ReportAction {
     INSERT_REPORT = 'insert',
     UPDATE_REPORT = 'update',
     DELETE_REPORT = 'delete',
+    INSERT_LIST_REPORT = 'insertList',
 }
 
 export type Report = {
@@ -16,7 +17,7 @@ export type Report = {
     deliveryPartner: string,
     recipient: string,
     equipment: string,
-    quantity: string,
+    quantity: number,
     deviceCode: string,
     condition: string,
     deliveryDate: Date
@@ -34,6 +35,7 @@ type ContextValue = State & {
     insertReport: (report: Report) => void;
     updateReport: (report: Report) => void;
     deleteReport: (id: number) => void;
+    insertListReport: (reportList: Report[] | any) => void;
 }
 
 type Action = {
@@ -52,7 +54,7 @@ const initialState: State = {
         deliveryPartner: '',
         recipient: '',
         equipment: '',
-        quantity: '',
+        quantity: 0,
         deviceCode: '',
         condition: 'NEW',
         deliveryDate: new Date(),
@@ -77,6 +79,8 @@ function reducer(state: State, action: Action): State {
             return {...state, isLoading: false};
         case ReportAction.DELETE_REPORT:
             return {...state, isLoading: false};
+        case ReportAction.INSERT_LIST_REPORT:
+            return {...state, isLoading: false};
         default:
             throw new Error("Unknown action type");
     }
@@ -95,7 +99,7 @@ const ReportProvider = ({children}: Props) => {
             const data = await response.json();
             dispatch({type: ReportAction.GET_ALL_REPORT, payload: data})
         } catch (error) {
-            console.log("Network error");
+            console.error("Network error");
         }
     }, [])
 
@@ -115,11 +119,10 @@ const ReportProvider = ({children}: Props) => {
 
     const updateReport = useCallback(async (report: Report) => {
         try {
-            const data = {...report, condition: report.condition === "Mới" ?  "NEW" : "OLD"};
             await fetch(url(`${API.REPORT}`), {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
+                body: JSON.stringify(report)
             });
             await getAllReport();
             dispatch({type: ReportAction.INSERT_REPORT});
@@ -140,6 +143,20 @@ const ReportProvider = ({children}: Props) => {
             throw new Error("Network error");
         }
     }, [getAllReport, dispatch])
+
+    const insertListReport = useCallback(async (reportList: Report[]) => {
+        try {
+            await fetch(url(`${API.REPORT}/list`), {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(reportList)
+            });
+            await getAllReport();
+            dispatch({type: ReportAction.INSERT_LIST_REPORT});
+        } catch (error) {
+            throw new Error("Network error");
+        }
+    }, [getAllReport, dispatch])
     return (
         <ReportContext.Provider
             value={{
@@ -150,7 +167,8 @@ const ReportProvider = ({children}: Props) => {
                 getAllReport,
                 insertReport,
                 updateReport,
-                deleteReport
+                deleteReport,
+                insertListReport
             }}>
             {children}
         </ReportContext.Provider>

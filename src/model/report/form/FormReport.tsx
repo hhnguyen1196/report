@@ -1,7 +1,6 @@
 import React, {FormEvent, useEffect, useState} from "react";
 import Button from "../../../layout/Button";
 import useReport from "../../../context/report/useReport";
-import {useNavigate} from "react-router-dom";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import {vi} from 'date-fns/locale';
@@ -14,8 +13,17 @@ type Props = {
 }
 
 const FormReport = ({onSuccess, onClose, data}: Props) => {
-    const {report, insertReport, updateReport} = useReport();
-    const [formData, setFormData] = useState(report);
+    const {insertReport, updateReport} = useReport();
+    const [formData, setFormData] = useState<Report>({
+        id: null,
+        deliveryPartner: '',
+        recipient: '',
+        equipment: '',
+        quantity: 0,
+        deviceCode: '',
+        condition: 'NEW',
+        deliveryDate: new Date(),
+    });
 
     useEffect(() => {
         if (data) {
