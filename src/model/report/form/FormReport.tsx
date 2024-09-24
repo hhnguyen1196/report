@@ -10,9 +10,10 @@ type Props = {
     onSuccess: () => void;
     onClose: () => void;
     data: Report | null | undefined;
+    setSelectedMonth: (month: number) => void;
 }
 
-const FormReport = ({onSuccess, onClose, data}: Props) => {
+const FormReport = ({onSuccess, onClose, data, setSelectedMonth}: Props) => {
     const {insertReport, updateReport} = useReport();
     const [formData, setFormData] = useState<Report>({
         id: null,
@@ -28,8 +29,23 @@ const FormReport = ({onSuccess, onClose, data}: Props) => {
     useEffect(() => {
         if (data) {
             setFormData(data)
+        } else {
+            resetState();
         }
     }, [data]);
+
+    const resetState = () => {
+        setFormData({
+            id: null,
+            deliveryPartner: '',
+            recipient: '',
+            equipment: '',
+            quantity: 0,
+            deviceCode: '',
+            condition: 'NEW',
+            deliveryDate: new Date(),
+        });
+    };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const {name, value} = event.target;
@@ -50,16 +66,18 @@ const FormReport = ({onSuccess, onClose, data}: Props) => {
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
         if (formData.id === null) {
-            insertReport(formData);
+            await insertReport(formData);
+            setSelectedMonth(formData.deliveryDate.getMonth())
         } else {
-            updateReport(formData);
+            await updateReport(formData);
+            setSelectedMonth(formData.deliveryDate.getMonth())
         }
         onSuccess();
     };
 
     return <div>
-        <h1 className="font-semibold leading-7 text-gray-900 text-2xl text-center my-4">Đăng ký mượn thiết bị</h1>
-        <form method="POST">
+        <h1 className="font-semibold leading-7 text-gray-900 text-2xl text-center my-4">{formData.id === null ? "Đăng ký mượn thiết bị" : "Cập nhật mượn thiết bị"}</h1>
+        <form method="POST" onSubmit={handleSubmit}>
             <div className="flex justify-center">
                 <div className="md:w-3/4">
                     <div className="py-1">

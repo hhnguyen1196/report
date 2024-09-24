@@ -32,7 +32,7 @@ const Table = ({report, index, onUpdate, onDelete, length}: Props) => {
                 <td className={`${styles}`}>{report.equipment}</td>
                 <td className={`${styles}${center}`}>{report.quantity}</td>
                 <td className={`${styles}`}>{report.deviceCode}</td>
-                <td className={`${styles}${center}`}>{report.condition}</td>
+                <td className={`${styles}${center}`}>{report.condition === "NEW" ? "Mới" : "Cũ"}</td>
                 <td className={`${styles}${center}`}>{report.deliveryDate !== null
                     ? format(report.deliveryDate, 'dd/MM/yyyy').toString() : ''}</td>
                 <td className={`${styles} updateOrDelete text-center`}>

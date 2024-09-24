@@ -1,4 +1,4 @@
-import {createContext, ReactNode, useCallback, useReducer} from "react";
+import React, {createContext, ReactNode, useCallback, useReducer, useState} from "react";
 import {url} from "../../environments/host";
 import {API} from "../../environments/api";
 
@@ -31,7 +31,7 @@ type State = {
 }
 
 type ContextValue = State & {
-    getAllReport: () => void;
+    getAllReport: (month: number) => void;
     insertReport: (report: Report) => void;
     updateReport: (report: Report) => void;
     deleteReport: (id: number) => void;
@@ -88,14 +88,15 @@ function reducer(state: State, action: Action): State {
 
 const ReportProvider = ({children}: Props) => {
     const [{reportList, report, isLoading, error}, dispatch] = useReducer(reducer, initialState);
+    const [currentMonth, setCurrentMonth] = useState<number>(1);
 
-    const getAllReport = useCallback(async function () {
+    const getAllReport = useCallback(async (month: number) => {
         dispatch({type: ReportAction.LOADING})
         try {
-            const response = await fetch(url(`${API.REPORT}`), {
+            setCurrentMonth(month);
+            const response = await fetch(url(`${API.REPORT}?month=${month}`), {
                 headers: {Accept: 'application/json'}
             });
-
             const data = await response.json();
             dispatch({type: ReportAction.GET_ALL_REPORT, payload: data})
         } catch (error) {
@@ -110,12 +111,13 @@ const ReportProvider = ({children}: Props) => {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(report)
             });
-            await getAllReport();
+            const month = new Date(report.deliveryDate).getMonth() + 1;
+            await getAllReport(month);
             dispatch({type: ReportAction.INSERT_REPORT});
         } catch (error) {
             throw new Error("Network error");
         }
-    }, [getAllReport, dispatch])
+    }, [getAllReport])
 
     const updateReport = useCallback(async (report: Report) => {
         try {
@@ -124,12 +126,13 @@ const ReportProvider = ({children}: Props) => {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(report)
             });
-            await getAllReport();
-            dispatch({type: ReportAction.INSERT_REPORT});
+            const month = new Date(report.deliveryDate).getMonth() + 1;
+            await getAllReport(month);
+            dispatch({type: ReportAction.UPDATE_REPORT});
         } catch (error) {
             throw new Error("Network error");
         }
-    }, [getAllReport, dispatch])
+    }, [getAllReport])
 
     const deleteReport = useCallback(async (id: number) => {
         try {
@@ -137,12 +140,12 @@ const ReportProvider = ({children}: Props) => {
                 method: 'DELETE',
                 headers: {'Content-Type': 'application/json'},
             });
-            await getAllReport();
+            await getAllReport(currentMonth);
             dispatch({type: ReportAction.DELETE_REPORT});
         } catch (error) {
             throw new Error("Network error");
         }
-    }, [getAllReport, dispatch])
+    }, [getAllReport, currentMonth])
 
     const insertListReport = useCallback(async (reportList: Report[]) => {
         try {
@@ -151,12 +154,12 @@ const ReportProvider = ({children}: Props) => {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(reportList)
             });
-            await getAllReport();
+            await getAllReport(currentMonth);
             dispatch({type: ReportAction.INSERT_LIST_REPORT});
         } catch (error) {
             throw new Error("Network error");
         }
-    }, [getAllReport, dispatch])
+    }, [getAllReport, currentMonth])
     return (
         <ReportContext.Provider
             value={{

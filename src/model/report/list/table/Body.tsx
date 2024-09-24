@@ -6,16 +6,20 @@ import Table from "./Table";
 type Props = {
     handleUpdate: (record: Report) => void;
     handleDelete: (id: number) => void;
+    selectedMonth: number;
+    setSelectedMonth: (month: number) => void;
 }
 
-const Body = ({handleUpdate, handleDelete}: Props) => {
-    const {reportList, getAllReport, } = useReport();
+const Body = ({handleUpdate, handleDelete, selectedMonth}: Props) => {
+    const {reportList, getAllReport} = useReport();
 
     const length = reportList.length;
 
     useEffect(() => {
-        getAllReport();
-    }, [getAllReport]);
+        if (selectedMonth) {
+            getAllReport(selectedMonth);
+        }
+    }, [getAllReport, selectedMonth]);
 
     return (
         <>
