@@ -33,7 +33,7 @@ export const exportTableToExcel = (tableId: string, month: number, year: number)
         return;
     }
 
-    const titleRow = [['BIÊN BẢN TỔNG HỢP BÀN GIAO THIẾT BỊ THÁNG 05/2024']];
+    const titleRow = [[`BIÊN BẢN TỔNG HỢP BÀN GIAO THIẾT BỊ THÁNG ${month}/${year}`]];
 
     const newData = [[], [], ...titleRow, [], [], ...data];
 

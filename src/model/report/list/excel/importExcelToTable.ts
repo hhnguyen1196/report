@@ -36,7 +36,7 @@ const formatData = (rawData: any[]): Props[] | null => {
     const headers = rawData[0];
     const requiredHeaders = [
         'STT', 'Bên giao', 'Bên nhận', 'Thiết bị',
-        'Số lượng', 'Mã thiết bị', 'Hiện trạng', 'Ngày bàn giao'
+        'SL', 'Mã thiết bị', 'Hiện trạng', 'Ngày bàn giao'
     ];
 
     if (!requiredHeaders.every(header => headers.includes(header))) {
@@ -57,7 +57,7 @@ const formatData = (rawData: any[]): Props[] | null => {
             deliveryPartner: row[headers.indexOf('Bên giao')],
             recipient: row[headers.indexOf('Bên nhận')],
             equipment: row[headers.indexOf('Thiết bị')],
-            quantity: row[headers.indexOf('Số lượng')],
+            quantity: row[headers.indexOf('SL')],
             deviceCode: row[headers.indexOf('Mã thiết bị')],
             condition: row[headers.indexOf('Hiện trạng')],
             deliveryDate: deliveryDate,
