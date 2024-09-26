@@ -31,11 +31,13 @@ type State = {
 }
 
 type ContextValue = State & {
-    getAllReport: (month: number) => void;
+    getAllReport: (month: number, year: number) => void;
     insertReport: (report: Report) => void;
     updateReport: (report: Report) => void;
     deleteReport: (id: number) => void;
     insertListReport: (reportList: Report[] | any) => void;
+    targetMonth: number;
+    targetYear: number;
 }
 
 type Action = {
@@ -47,7 +49,7 @@ type Props = {
     children?: ReactNode
 }
 
-const initialState: State = {
+export const initialState: State = {
     reportList: [],
     report: {
         id: null,
@@ -88,13 +90,15 @@ function reducer(state: State, action: Action): State {
 
 const ReportProvider = ({children}: Props) => {
     const [{reportList, report, isLoading, error}, dispatch] = useReducer(reducer, initialState);
-    const [currentMonth, setCurrentMonth] = useState<number>(1);
+    const [targetMonth, setTargetMonth] = useState<number>(1);
+    const [targetYear, setTargetYear] = useState<number>(Number(new Date().getFullYear));
 
-    const getAllReport = useCallback(async (month: number) => {
+    const getAllReport = useCallback(async (month: number, year: number) => {
         dispatch({type: ReportAction.LOADING})
         try {
-            setCurrentMonth(month);
-            const response = await fetch(url(`${API.REPORT}?month=${month}`), {
+            setTargetMonth(month);
+            setTargetYear(year);
+            const response = await fetch(url(`${API.REPORT}?month=${month}&year=${year}`), {
                 headers: {Accept: 'application/json'}
             });
             const data = await response.json();
@@ -112,7 +116,8 @@ const ReportProvider = ({children}: Props) => {
                 body: JSON.stringify(report)
             });
             const month = new Date(report.deliveryDate).getMonth() + 1;
-            await getAllReport(month);
+            const year = new Date(report.deliveryDate).getFullYear();
+            await getAllReport(month, year);
             dispatch({type: ReportAction.INSERT_REPORT});
         } catch (error) {
             throw new Error("Network error");
@@ -127,7 +132,8 @@ const ReportProvider = ({children}: Props) => {
                 body: JSON.stringify(report)
             });
             const month = new Date(report.deliveryDate).getMonth() + 1;
-            await getAllReport(month);
+            const year = new Date(report.deliveryDate).getFullYear();
+            await getAllReport(month, year);
             dispatch({type: ReportAction.UPDATE_REPORT});
         } catch (error) {
             throw new Error("Network error");
@@ -140,12 +146,12 @@ const ReportProvider = ({children}: Props) => {
                 method: 'DELETE',
                 headers: {'Content-Type': 'application/json'},
             });
-            await getAllReport(currentMonth);
+            await getAllReport(targetMonth, targetYear);
             dispatch({type: ReportAction.DELETE_REPORT});
         } catch (error) {
             throw new Error("Network error");
         }
-    }, [getAllReport, currentMonth])
+    }, [getAllReport, targetMonth, targetYear])
 
     const insertListReport = useCallback(async (reportList: Report[]) => {
         try {
@@ -154,12 +160,12 @@ const ReportProvider = ({children}: Props) => {
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(reportList)
             });
-            await getAllReport(currentMonth);
+            await getAllReport(targetMonth, targetYear);
             dispatch({type: ReportAction.INSERT_LIST_REPORT});
         } catch (error) {
             throw new Error("Network error");
         }
-    }, [getAllReport, currentMonth])
+    }, [getAllReport, targetMonth, targetYear])
     return (
         <ReportContext.Provider
             value={{
@@ -171,7 +177,9 @@ const ReportProvider = ({children}: Props) => {
                 insertReport,
                 updateReport,
                 deleteReport,
-                insertListReport
+                insertListReport,
+                targetMonth,
+                targetYear
             }}>
             {children}
         </ReportContext.Provider>

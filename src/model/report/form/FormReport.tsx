@@ -4,48 +4,30 @@ import useReport from "../../../context/report/useReport";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import {vi} from 'date-fns/locale';
-import {Report} from "../../../context/report/ReportProvider";
+import {Report, initialState} from "../../../context/report/ReportProvider";
 
 type Props = {
     onSuccess: () => void;
     onClose: () => void;
     data: Report | null | undefined;
-    setSelectedMonth: (month: number) => void;
+    onMonthUpdate: (month: number) => void;
 }
 
-const FormReport = ({onSuccess, onClose, data, setSelectedMonth}: Props) => {
+const FormReport = ({onMonthUpdate, onSuccess, onClose, data}: Props) => {
     const {insertReport, updateReport} = useReport();
-    const [formData, setFormData] = useState<Report>({
-        id: null,
-        deliveryPartner: '',
-        recipient: '',
-        equipment: '',
-        quantity: 0,
-        deviceCode: '',
-        condition: 'NEW',
-        deliveryDate: new Date(),
-    });
+    const [formData, setFormData] = useState<Report>(initialState.report);
 
     useEffect(() => {
         if (data) {
-            setFormData(data)
+            const updatedData = {
+                ...data,
+                deliveryDate: new Date(data.deliveryDate)
+            };
+            setFormData(updatedData)
         } else {
-            resetState();
+            setFormData(initialState.report);
         }
     }, [data]);
-
-    const resetState = () => {
-        setFormData({
-            id: null,
-            deliveryPartner: '',
-            recipient: '',
-            equipment: '',
-            quantity: 0,
-            deviceCode: '',
-            condition: 'NEW',
-            deliveryDate: new Date(),
-        });
-    };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const {name, value} = event.target;
@@ -56,22 +38,18 @@ const FormReport = ({onSuccess, onClose, data, setSelectedMonth}: Props) => {
     };
 
     const handleDateChange = (date: Date | null) => {
-        if (date) {
-            setFormData({...formData, deliveryDate: date});
-        } else {
-            setFormData({...formData, deliveryDate: new Date()});
-        }
+        const newDate = date || new Date();
+        setFormData({...formData, deliveryDate: newDate});
     };
 
-    const handleSubmit = async (event: FormEvent) => {
+    const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
         if (formData.id === null) {
-            await insertReport(formData);
-            setSelectedMonth(formData.deliveryDate.getMonth())
+            insertReport(formData);
         } else {
-            await updateReport(formData);
-            setSelectedMonth(formData.deliveryDate.getMonth())
+            updateReport(formData);
         }
+        onMonthUpdate(formData.deliveryDate.getMonth() + 1);
         onSuccess();
     };
 

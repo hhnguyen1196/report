@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {importExcelData} from "../../../../utils/importExcelToTable";
+import {importExcelData} from "../excel/importExcelToTable";
 import useReport from "../../../../context/report/useReport";
 import {Report} from "../../../../context/report/ReportProvider";
 

@@ -7,19 +7,19 @@ type Props = {
     handleUpdate: (record: Report) => void;
     handleDelete: (id: number) => void;
     selectedMonth: number;
-    setSelectedMonth: (month: number) => void;
+    selectedYear: number;
 }
 
-const Body = ({handleUpdate, handleDelete, selectedMonth}: Props) => {
+const Body = ({handleUpdate, handleDelete, selectedMonth, selectedYear}: Props) => {
     const {reportList, getAllReport} = useReport();
 
     const length = reportList.length;
 
     useEffect(() => {
-        if (selectedMonth) {
-            getAllReport(selectedMonth);
+        if (selectedMonth && selectedYear) {
+            getAllReport(selectedMonth, selectedYear);
         }
-    }, [getAllReport, selectedMonth]);
+    }, [getAllReport, selectedMonth, selectedYear]);
 
     return (
         <>

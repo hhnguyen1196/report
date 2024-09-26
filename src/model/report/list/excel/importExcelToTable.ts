@@ -53,7 +53,7 @@ const formatData = (rawData: any[]): Props[] | null => {
         const deliveryDate: Date = new Date(Date.UTC(year, month, day));
 
         return {
-            id: row[headers.indexOf('STT')] || null, // Cần thay đổi 'id' thành 'STT'
+            id: row[headers.indexOf('STT')] || null,
             deliveryPartner: row[headers.indexOf('Bên giao')],
             recipient: row[headers.indexOf('Bên nhận')],
             equipment: row[headers.indexOf('Thiết bị')],
