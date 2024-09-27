@@ -33,15 +33,9 @@ export const exportTableToExcel = (tableId: string, month: number, year: number)
         return;
     }
 
-    const titleRow = [[`BIÊN BẢN TỔNG HỢP BÀN GIAO THIẾT BỊ THÁNG ${month}/${year}`]];
+    const table = [...data];
 
-    const newData = [[], [], ...titleRow, [], [], ...data];
-
-    const ws = XLSX.utils.aoa_to_sheet(newData);
-
-    ws['!merges'] = [
-        {s: {r: 2, c: 0}, e: {r: 2, c: 7}} // Merge từ cột 0 đến cột 7 ở dòng 0
-    ];
+    const ws = XLSX.utils.aoa_to_sheet(table);
 
     ws['!cols'] = [
         {wch: 4}, // STT
