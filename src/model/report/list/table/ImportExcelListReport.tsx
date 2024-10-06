@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {importExcelData} from "../excel/importExcelToTable";
 import useReport from "../../../../context/report/useReport";
 import {Report} from "../../../../context/report/ReportProvider";
+import {toast} from "react-toastify";
 
 type Props = {
     id: number | null;
@@ -35,7 +36,11 @@ const ImportExcelListReport = () => {
                 }));
                 setFileKey(prevKey => prevKey + 1);
                 event.target.value = '';
-                insertListReport(convertData);
+                await insertListReport(convertData);
+                await toast.success('Nhập file dữ liệu thành công!', {
+                    icon: false,
+                    className: 'bg-red-600 text-white text-center rounded-lg'
+                });
             } catch (error) {
                 console.error("Lỗi khi đọc file:", error);
             }

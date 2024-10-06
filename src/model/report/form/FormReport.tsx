@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import {vi} from 'date-fns/locale';
 import {Report, initialState} from "../../../context/report/ReportProvider";
+import {toast} from "react-toastify";
 
 type Props = {
     onSuccess: () => void;
@@ -42,12 +43,20 @@ const FormReport = ({onMonthUpdate, onSuccess, onClose, data}: Props) => {
         setFormData({...formData, deliveryDate: newDate});
     };
 
-    const handleSubmit = (event: FormEvent) => {
+    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
         if (formData.id === null) {
-            insertReport(formData);
+            await insertReport(formData);
+            await toast.success('Đăng ký thiết bị thành công!', {
+                icon: false,
+                className: 'bg-red-600 text-white text-center rounded-lg'
+            });
         } else {
-            updateReport(formData);
+            await updateReport(formData);
+            await toast.success('Cập nhật thiết bị thành công!', {
+                icon: false,
+                className: 'bg-red-600 text-white text-center rounded-lg'
+            });
         }
         onMonthUpdate(formData.deliveryDate.getMonth() + 1);
         onSuccess();

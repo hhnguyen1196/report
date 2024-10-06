@@ -10,7 +10,7 @@ import {initialState, Report} from "../../../context/report/ReportProvider";
 
 import ImportExcelListReport from "./table/ImportExcelListReport";
 import {exportTableToExcel} from "./excel/exportTableToExcel";
-import {ToastContainer} from "react-toastify";
+import {toast, ToastContainer, Bounce} from "react-toastify";
 
 const ListReport = () => {
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
@@ -65,9 +65,13 @@ const ListReport = () => {
         setIsModalFormOpen(false);
     }
 
-    const confirmDelete = () => {
+    const confirmDelete = async () => {
         if (selectedReport) {
-            deleteReport(selectedReport)
+            await deleteReport(selectedReport)
+            await toast.success('Xóa dữ liệu thành công!', {
+                icon: false,
+                className: 'bg-red-600 text-white text-center rounded-lg'
+            });
         }
         setIsModalTableOpen(false);
         setSelectedReport(null);
@@ -97,6 +101,15 @@ const ListReport = () => {
         <div className="px-[100px]">
             <h1 className="uppercase font-bold text-3xl text-stone-600 m-2 justify-center text-center">Danh sách tổng
                 hợp bàn giao thiết bị</h1>
+            <ToastContainer
+                position="top-center"
+                autoClose={2000}
+                closeOnClick
+                pauseOnFocusLoss
+                theme="light"
+                transition={Bounce}
+                hideProgressBar={true}
+            />
             <Button onClick={openModal} type="insertReport">Tạo mới</Button>
             <select
                 className="border border-red-600 text-black px-2 py-2 mx-4 rounded-md cursor-pointer focus:border-gray-600 focus:outline-none"
@@ -134,7 +147,6 @@ const ListReport = () => {
                 <FormReport onSuccess={onSuccess} onClose={closeModal} data={selectedReportUpdate}
                             onMonthUpdate={setSelectedMonth}/>
             </FormModal>
-            <ToastContainer/>
         </div>
     );
 }
