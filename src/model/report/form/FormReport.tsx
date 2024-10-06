@@ -49,16 +49,10 @@ const FormReport = ({onMonthUpdate, onSuccess, onClose, data}: Props) => {
         onSuccess();
         if (formData.id === null) {
             await insertReport(formData);
-            await toast.success('Đăng ký thiết bị thành công!', {
-                icon: false,
-                className: 'bg-red-600 text-white text-center rounded-lg'
-            });
+            await toast.success('Đăng ký thiết bị thành công!');
         } else {
             await updateReport(formData);
-            await toast.success('Cập nhật thiết bị thành công!', {
-                icon: false,
-                className: 'bg-red-600 text-white text-center rounded-lg'
-            });
+            await toast.success('Cập nhật thiết bị thành công!');
         }
     };
 

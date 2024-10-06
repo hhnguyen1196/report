@@ -37,10 +37,7 @@ const ImportExcelListReport = () => {
                 setFileKey(prevKey => prevKey + 1);
                 event.target.value = '';
                 await insertListReport(convertData);
-                await toast.success('Nhập file dữ liệu thành công!', {
-                    icon: false,
-                    className: 'bg-red-600 text-white text-center rounded-lg'
-                });
+                await toast.success('Nhập file dữ liệu thành công!');
             } catch (error) {
                 console.error("Lỗi khi đọc file:", error);
             }

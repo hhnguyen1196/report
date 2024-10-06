@@ -11,6 +11,7 @@ import {initialState, Report} from "../../../context/report/ReportProvider";
 import ImportExcelListReport from "./table/ImportExcelListReport";
 import {exportTableToExcel} from "./excel/exportTableToExcel";
 import {toast, ToastContainer, Bounce} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
 import Loading from "../../../layout/Loading";
 
 const ListReport = () => {
@@ -70,10 +71,7 @@ const ListReport = () => {
         setIsModalTableOpen(false);
         if (selectedReport) {
             await deleteReport(selectedReport)
-            await toast.success('Xóa dữ liệu thành công!', {
-                icon: false,
-                className: 'bg-red-600 text-white text-center rounded-lg'
-            });
+            await toast.success('Xóa dữ liệu thành công!');
         }
         setSelectedReport(null);
     };
@@ -109,12 +107,13 @@ const ListReport = () => {
             )}
             <ToastContainer
                 position="top-center"
-                autoClose={2000}
+                autoClose={3000}
                 closeOnClick
                 pauseOnFocusLoss
                 theme="light"
                 transition={Bounce}
                 hideProgressBar={true}
+                icon={false}
             />
             <Button onClick={openModal} type="insertReport">Tạo mới</Button>
             <select
