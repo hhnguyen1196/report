@@ -10,6 +10,7 @@ import {initialState, Report} from "../../../context/report/ReportProvider";
 
 import ImportExcelListReport from "./table/ImportExcelListReport";
 import {exportTableToExcel} from "./excel/exportTableToExcel";
+import {ToastContainer} from "react-toastify";
 
 const ListReport = () => {
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
@@ -133,6 +134,7 @@ const ListReport = () => {
                 <FormReport onSuccess={onSuccess} onClose={closeModal} data={selectedReportUpdate}
                             onMonthUpdate={setSelectedMonth}/>
             </FormModal>
+            <ToastContainer/>
         </div>
     );
 }

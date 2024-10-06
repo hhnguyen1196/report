@@ -16,10 +16,10 @@ export const importExcelData = (file: File): Promise<Props[] | null> => {
         const reader = new FileReader();
         reader.onload = (event) => {
             const bstr = event.target?.result;
-            const workbook = XLSX.read(bstr, { type: 'binary' });
+            const workbook = XLSX.read(bstr, {type: 'binary'});
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
             const formattedData = formatData(jsonData);
             resolve(formattedData);
         };
@@ -44,13 +44,16 @@ const formatData = (rawData: any[]): Props[] | null => {
     }
 
     return rawData.slice(1).map((row: any) => {
-        const dateString: string = row[headers.indexOf('Ngày bàn giao')] || '';
-        const parts: string[] = dateString.split("/");
+        const deliveryDateValue = row[headers.indexOf('Ngày bàn giao')];
 
-        const day: number = parseInt(parts[0]);
-        const month: number = parseInt(parts[1]) - 1;
-        const year: number = parseInt(parts[2]);
-        const deliveryDate: Date = new Date(Date.UTC(year, month, day));
+        let deliveryDate: Date;
+
+        if (typeof deliveryDateValue === 'number') {
+            const date = XLSX.SSF.parse_date_code(deliveryDateValue);
+            deliveryDate = new Date(date.y, date.m - 1, date.d);
+        } else {
+            deliveryDate = new Date(deliveryDateValue);
+        }
 
         return {
             id: row[headers.indexOf('STT')] || null,
@@ -60,7 +63,7 @@ const formatData = (rawData: any[]): Props[] | null => {
             quantity: row[headers.indexOf('SL')],
             deviceCode: row[headers.indexOf('Mã thiết bị')],
             condition: row[headers.indexOf('Hiện trạng')],
-            deliveryDate: deliveryDate,
+            deliveryDate: deliveryDate
         };
     });
 };
