@@ -11,16 +11,18 @@ import {initialState, Report} from "../../../context/report/ReportProvider";
 import ImportExcelListReport from "./table/ImportExcelListReport";
 import {exportTableToExcel} from "./excel/exportTableToExcel";
 import {toast, ToastContainer, Bounce} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
+import Loading from "../../../layout/Loading";
 
 const ListReport = () => {
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
     const [isModalTableOpen, setIsModalTableOpen] = useState(false);
-    const {deleteReport} = useReport();
+    const {isLoading, deleteReport} = useReport();
     const [selectedReport, setSelectedReport] = useState<number | null>();
     const [selectedReportUpdate, setSelectedReportUpdate] = useState<Report>();
     const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth() + 1);
     const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
-    const [tempYear, setTempYear] = useState<string>('2024');
+    const [tempYear, setTempYear] = useState<string>(new Date().getFullYear().toString());
 
     useEffect(() => {
         setSelectedMonth(new Date().getMonth() + 1);
@@ -66,14 +68,11 @@ const ListReport = () => {
     }
 
     const confirmDelete = async () => {
+        setIsModalTableOpen(false);
         if (selectedReport) {
             await deleteReport(selectedReport)
-            await toast.success('Xóa dữ liệu thành công!', {
-                icon: false,
-                className: 'bg-red-600 text-white text-center rounded-lg'
-            });
+            await toast.success('Xóa dữ liệu thành công!');
         }
-        setIsModalTableOpen(false);
         setSelectedReport(null);
     };
 
@@ -101,14 +100,20 @@ const ListReport = () => {
         <div className="px-[100px]">
             <h1 className="uppercase font-bold text-3xl text-stone-600 m-2 justify-center text-center">Danh sách tổng
                 hợp bàn giao thiết bị</h1>
+            {isLoading && (
+                <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+                    <Loading />
+                </div>
+            )}
             <ToastContainer
                 position="top-center"
-                autoClose={2000}
+                autoClose={3000}
                 closeOnClick
                 pauseOnFocusLoss
                 theme="light"
                 transition={Bounce}
                 hideProgressBar={true}
+                icon={false}
             />
             <Button onClick={openModal} type="insertReport">Tạo mới</Button>
             <select

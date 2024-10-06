@@ -45,21 +45,15 @@ const FormReport = ({onMonthUpdate, onSuccess, onClose, data}: Props) => {
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
-        if (formData.id === null) {
-            await insertReport(formData);
-            await toast.success('Đăng ký thiết bị thành công!', {
-                icon: false,
-                className: 'bg-red-600 text-white text-center rounded-lg'
-            });
-        } else {
-            await updateReport(formData);
-            await toast.success('Cập nhật thiết bị thành công!', {
-                icon: false,
-                className: 'bg-red-600 text-white text-center rounded-lg'
-            });
-        }
         onMonthUpdate(formData.deliveryDate.getMonth() + 1);
         onSuccess();
+        if (formData.id === null) {
+            await insertReport(formData);
+            await toast.success('Đăng ký thiết bị thành công!');
+        } else {
+            await updateReport(formData);
+            await toast.success('Cập nhật thiết bị thành công!');
+        }
     };
 
     return <div>

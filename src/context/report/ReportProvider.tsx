@@ -109,6 +109,7 @@ const ReportProvider = ({children}: Props) => {
     }, [])
 
     const insertReport = useCallback(async (report: Report) => {
+        dispatch({type: ReportAction.LOADING});
         try {
             await fetch(url(`${API.REPORT}`), {
                 method: 'POST',
@@ -125,6 +126,7 @@ const ReportProvider = ({children}: Props) => {
     }, [getAllReport])
 
     const updateReport = useCallback(async (report: Report) => {
+        dispatch({type: ReportAction.LOADING});
         try {
             await fetch(url(`${API.REPORT}`), {
                 method: 'POST',
@@ -141,6 +143,7 @@ const ReportProvider = ({children}: Props) => {
     }, [getAllReport])
 
     const deleteReport = useCallback(async (id: number) => {
+        dispatch({type: ReportAction.LOADING});
         try {
             await fetch(url(`${API.REPORT}/${id}`), {
                 method: 'DELETE',
@@ -154,6 +157,7 @@ const ReportProvider = ({children}: Props) => {
     }, [getAllReport, targetMonth, targetYear])
 
     const insertListReport = useCallback(async (reportList: Report[]) => {
+        dispatch({type: ReportAction.LOADING});
         try {
             await fetch(url(`${API.REPORT}/list`), {
                 method: 'POST',
