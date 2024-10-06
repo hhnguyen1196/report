@@ -45,6 +45,8 @@ const FormReport = ({onMonthUpdate, onSuccess, onClose, data}: Props) => {
 
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault();
+        onMonthUpdate(formData.deliveryDate.getMonth() + 1);
+        onSuccess();
         if (formData.id === null) {
             await insertReport(formData);
             await toast.success('Đăng ký thiết bị thành công!', {
@@ -58,8 +60,6 @@ const FormReport = ({onMonthUpdate, onSuccess, onClose, data}: Props) => {
                 className: 'bg-red-600 text-white text-center rounded-lg'
             });
         }
-        onMonthUpdate(formData.deliveryDate.getMonth() + 1);
-        onSuccess();
     };
 
     return <div>
