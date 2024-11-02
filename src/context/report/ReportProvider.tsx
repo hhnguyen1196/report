@@ -35,7 +35,7 @@ type ContextValue = State & {
     insertReport: (report: Report) => void;
     updateReport: (report: Report) => void;
     deleteReport: (id: number) => void;
-    insertListReport: (reportList: Report[] | any) => void;
+    insertListReport: (reportList: Report[] | any) => Promise<boolean>;
     targetMonth: number;
     targetYear: number;
 }
@@ -159,13 +159,14 @@ const ReportProvider = ({children}: Props) => {
     const insertListReport = useCallback(async (reportList: Report[]) => {
         dispatch({type: ReportAction.LOADING});
         try {
-            await fetch(url(`${API.REPORT}/list`), {
+            const response = await fetch(url(`${API.REPORT}/list`), {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(reportList)
             });
             await getAllReport(targetMonth, targetYear);
             dispatch({type: ReportAction.INSERT_LIST_REPORT});
+            return response.status === 200;
         } catch (error) {
             throw new Error("Network error");
         }
