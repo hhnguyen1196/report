@@ -20,8 +20,6 @@ export const importExcelData = (file: File): Promise<Props[] | null> => {
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
             const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1, raw: false});
-            console.log(jsonData.length)
-            console.log(jsonData)
             const formattedData = formatData(jsonData);
             resolve(formattedData);
         };

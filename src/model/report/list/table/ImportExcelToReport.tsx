@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import {importExcelData} from "../excel/importExcelToTable";
 import useReport from "../../../../context/report/useReport";
 import {Report} from "../../../../context/report/ReportProvider";
 import {toast} from "react-toastify";
+import {importExcelToReport} from "../excel/importExcelToReport";
 
 type Props = {
     id: number | null;
@@ -15,7 +15,7 @@ type Props = {
     deliveryDate: Date;
 }
 
-const ImportExcelListReport = () => {
+const ImportExcelToReport = () => {
     const [fileKey, setFileKey] = useState(0);
     const {insertListReport} = useReport();
 
@@ -23,7 +23,7 @@ const ImportExcelListReport = () => {
         const file = event.target.files?.[0];
         if (file) {
             try {
-                const data: Props[] | null = await importExcelData(file);
+                const data: Props[] | null = await importExcelToReport(file);
                 const convertData: Report[] | undefined = data?.map(item => ({
                     id: null,
                     deliveryPartner: item.deliveryPartner,
@@ -45,10 +45,10 @@ const ImportExcelListReport = () => {
     };
 
     return <label
-        className="rounded-md mx-3 mt-4 px-4 py-2 border-solid border border-red-600 bg-white text-red-500 cursor-pointer">
-        Nhập file danh sách
+        className="rounded-md mt-4 px-4 py-2 border-solid border border-red-600 bg-white text-red-500 cursor-pointer">
+        Nhập file
         <input key={fileKey} className="hidden" type="file" accept=".xlsx, .xls" onChange={handleFileUpload}/>
     </label>
 };
 
-export default ImportExcelListReport;
+export default ImportExcelToReport;
