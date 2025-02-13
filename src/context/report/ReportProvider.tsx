@@ -166,7 +166,7 @@ const ReportProvider = ({children}: Props) => {
             });
             await getAllReport(targetMonth, targetYear);
             dispatch({type: ReportAction.INSERT_LIST_REPORT});
-            return response.status === 200;
+            return response.status === 201;
         } catch (error) {
             throw new Error("Network error");
         }
