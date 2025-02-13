@@ -13,6 +13,7 @@ import {exportTableToExcel} from "./excel/exportTableToExcel";
 import {toast, ToastContainer, Bounce} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
 import Loading from "../../../layout/Loading";
+import ImportExcelToReport from "./table/ImportExcelToReport";
 
 const ListReport = () => {
     const [isModalFormOpen, setIsModalFormOpen] = useState(false);
@@ -147,6 +148,7 @@ const ListReport = () => {
                 Xuất file
             </Button>
             <ImportExcelListReport></ImportExcelListReport>
+            <ImportExcelToReport></ImportExcelToReport>
 
             <FormModal isOpen={isModalFormOpen} onClose={closeModal}>
                 <FormReport onSuccess={onSuccess} onClose={closeModal} data={selectedReportUpdate}
